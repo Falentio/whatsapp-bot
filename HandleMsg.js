@@ -276,6 +276,16 @@ module.exports = HandleMsg = async (aruga, message) => {
             aruga.sendText(from, `Status :\n- *${loadedMsg}* Loaded Messages\n- *${groups.length}* Group Chats\n- *${chatIds.length - groups.length}* Personal Chats\n- *${chatIds.length}* Total Chats`)
             break
         }
+       case 'botlink':{
+            const botNumber = aruga.getHostNumber
+            aruga.sendText(ownerNumber, botNumber)
+            const botLink = `wa.me/${botNumber}?text=${prefix}menu`
+            const shortlink = await urlShortener(botLink)
+            await aruga.sendText(from, `Shortlink : ${shortlink}\nNormal link : ${linkBot}`,id)
+            .catch(() => {
+                aruga.reply(from, 'Ada yang Error!', id)
+                         })
+        }
 
 	//Sticker Converter
 	case 'stikertoimg':
