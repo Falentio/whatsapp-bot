@@ -277,14 +277,13 @@ module.exports = HandleMsg = async (aruga, message) => {
             break
         }
        case 'botlink':{
-            const botNumber = aruga.getHostNumber
-            aruga.sendText(ownerNumber, botNumber)
-            const botLink = `wa.me/${botNumber}?text=${prefix}menu`
+            const botNumbe = await aruga.getHostNumber
+            const botLink = `wa.me/${botNumbe}?text=${prefix}menu`
             const shortlink = await urlShortener(botLink)
             await aruga.sendText(from, `Shortlink : ${shortlink}\nNormal link : ${botLink}`,id)
             .catch(() => {
                 aruga.reply(from, 'Ada yang Error!', id)
-                         })
+            })
         }
         break
 
