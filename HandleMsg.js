@@ -219,7 +219,7 @@ module.exports = HandleMsg = async (aruga, message) => {
         switch (command) {
         // Menu and TnC
         case 'speed':
-        case 'ping':
+        case 'p':
             await aruga.sendText(from, `Pong!!!!\nSpeed: ${processTime(t, moment())} _Second_`)
             break
         case 'tnc':
@@ -240,10 +240,10 @@ module.exports = HandleMsg = async (aruga, message) => {
         case 'donasi':
             await aruga.sendText(from, menuId.textDonasi())
             break
-        case 'ownerbot':
+        /*case 'ownerbot':
             await aruga.sendContact(from, ownerNumber)
             .then(() => aruga.sendText(from, 'Jika kalian ingin request fitur silahkan chat nomor owner!'))
-            break
+            break*/
         case 'join':
             if (args.length == 0) return aruga.reply(from, `Jika kalian ingin mengundang bot kegroup silahkan invite atau dengan\nketik ${prefix}join [link group]`, id)
             let linkgrup = body.slice(6)
@@ -277,7 +277,7 @@ module.exports = HandleMsg = async (aruga, message) => {
             break
         }
        case 'botlink':{
-            const botNumbe = await aruga.getHostNumber
+            const botNumbe = await aruga.getHostNumber()
             const wameLink = `wa.me\/${botNumbe}?text=${prefix}menu`
             const shortlink = await urlShortener(wameLink)
             await aruga.sendText(from, `Shortlink : ${shortlink}\nNormal link : ${wameLink}`,id)
