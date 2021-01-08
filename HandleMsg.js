@@ -286,6 +286,7 @@ module.exports = HandleMsg = async (aruga, message) => {
                 aruga.reply(from, 'Ada yang Error!', id)
                          })
         }
+        break
 
 	//Sticker Converter
 	case 'stikertoimg':
