@@ -287,7 +287,7 @@ module.exports = HandleMsg = async (aruga, message) => {
             })
         }
         break
-      case 'ygo search' :{
+      case 'ygosearch' :{
         aruga.reply(from, 'y', id)
         const cardName = body.split('ygo search')[1]
         const cardData = await ygo.searchWithName(cardName)
