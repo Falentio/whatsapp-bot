@@ -291,6 +291,7 @@ module.exports = HandleMsg = async (aruga, message) => {
         const cardName = body.split('ygo search')[1]
         const cardData = await ygo.searchWithName(cardName)
         await aruga.reply(from, cardData, id)
+        await aruga.reply(from, cardName, id)
        }
       break
         //Sticker Converter
