@@ -32,7 +32,8 @@ const {
     resep,
     rugapoi,
     rugaapi,
-    cariKasar
+    cariKasar,
+    ygo
 } = require('./lib')
 
 const { 
@@ -286,8 +287,13 @@ module.exports = HandleMsg = async (aruga, message) => {
             })
         }
         break
-
-	//Sticker Converter
+      case 'ygo search' :{
+        const cardName = body.split('ygo search')[1]
+        const cardData = await ygo.searchWithName(cardName)
+        return cardData
+       }
+      break
+        //Sticker Converter
 	case 'stikertoimg':
 	case 'stickertoimg':
 	case 'stimg':
