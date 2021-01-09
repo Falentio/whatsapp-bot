@@ -289,7 +289,7 @@ module.exports = HandleMsg = async (aruga, message) => {
         break
       case 'ygosearch' :{
         aruga.reply(from, 'y', id)
-        const cardName = body.split('ygosearch')[1]
+        const cardName = body.split('ygosearch')[1].trim()
         await aruga.reply(from, cardName.replace(' ','%20'), id)
         const cardData = await ygo.getWithName(cardName)
         await aruga.reply(from, cardData, id)
