@@ -280,7 +280,7 @@ module.exports = HandleMsg = async (aruga, message) => {
             const botNumbe = await aruga.getHostNumber()
             const wameLink = `wa.me\/${botNumbe}?text=${prefix}menu`
             const shortlink = await urlShortener(wameLink)
-            await aruga.sendText(from, `Shortlink :\n${shortlink}\nNormal link :\n${wameLink}`,id)
+            await aruga.sendText(from, shortlink, id)
             .catch(() => {
                 aruga.reply(from, 'Ada yang Error!', id)
             })
