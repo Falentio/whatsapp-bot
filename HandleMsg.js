@@ -295,7 +295,7 @@ module.exports = HandleMsg = async (aruga, message) => {
         await aruga.reply(from, cardData, id)
         }
       break
-      case 'ygo';
+      case 'ygo':
          if(args[0] == 'add' && isOwnerBot){
             ygowl.push(chatId)
             fs.writeFileSync('./settings/ygowhitelist.json', JSON.stringify(ygowl))
