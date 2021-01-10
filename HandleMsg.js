@@ -47,6 +47,7 @@ const {
 const { uploadImages } = require('./utils/fetcher')
 
 const fs = require('fs-extra')
+const ygowl = JSON.parse(fs.readFileSync('./settings/ygowhitelist.json'))
 const banned = JSON.parse(fs.readFileSync('./settings/banned.json'))
 const simi = JSON.parse(fs.readFileSync('./settings/simi.json'))
 const ngegas = JSON.parse(fs.readFileSync('./settings/ngegas.json'))
@@ -116,6 +117,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 		
 		// [IDENTIFY]
 		const isOwnerBot = ownerNumber.includes(pengirim)
+        const isYGOWL = ygowl.includes(chatId)
         const isBanned = banned.includes(pengirim)
 		const isSimi = simi.includes(chatId)
 		const isNgegas = ngegas.includes(chatId)
@@ -292,6 +294,24 @@ module.exports = HandleMsg = async (aruga, message) => {
         const cardData = await ygo.getWName(cardName)
         await aruga.reply(from, cardData, id)
         }
+      break
+      case 'ygo';
+         if(args[0] == 'add' && isOwnerBot){
+            ygowl.push(chatId)
+            fs.writeFileSync('./settings/ygowhitelist.json', JSON.stringify(ygowl))
+            aruga.reply(from, 'Success menambahkan group')
+         }     
+         if(!isYGOWL) return aruga.sendText(from, 'maaf grup tidak terdaftar di whitelist'))
+         if(args[0] == 'search'){
+           const cardName = body.split('ygo search')[1].trim()
+           const cardData = await ygo.getWName(cardName)
+           await aruga.reply(from, cardData, id)
+         }
+         if(args[0] == 'random'){
+           const withDesc = args[1] !== undefined
+           const cardData = await ygo.random(withDesc)
+           await aruga.reply(from, cardData, id)
+         }
       break
         //Sticker Converter
 	case 'stikertoimg':
