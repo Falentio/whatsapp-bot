@@ -301,7 +301,7 @@ module.exports = HandleMsg = async (aruga, message) => {
             fs.writeFileSync('./settings/ygowhitelist.json', JSON.stringify(ygowl))
             aruga.reply(from, 'Success menambahkan group')
          }     
-         if(!isYGOWL) return aruga.sendText(from, 'maaf grup tidak terdaftar di whitelist' + args[0])
+         if(!isYGOWL) return aruga.sendText(from, 'maaf grup tidak terdaftar di whitelist', id)
          if(args[0] == 'search'){
            const cardName = body.split('ygo search')[1].trim()
            const cardData = await ygo.getWName(cardName)
