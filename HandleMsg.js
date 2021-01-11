@@ -221,6 +221,9 @@ module.exports = HandleMsg = async (aruga, message) => {
 		
         switch (command) {
         // Menu and TnC
+        default:
+           await aruga.reply(from, maaf tidak dapat menemukan command,ketik ${prefix}menu untuk melihat daftar command, id)
+        break
         case 'speed':
         case 'p':
             await aruga.sendText(from, `Pong!!!!\nSpeed: ${processTime(t, moment())} _Second_`)
@@ -305,6 +308,10 @@ module.exports = HandleMsg = async (aruga, message) => {
            const withDesc = args[1] !== undefined
            const cardData = await ygo.random(withDesc)
            await aruga.reply(from, cardData, id)
+         }else{
+           const cardName = body.split('${prefix}ygo ')[1].trim()
+           const cardData = await ygo.getWName(cardName)
+           await aruga.reply(from, cardData, id)
          }
       break
         //Sticker Converter
@@ -348,6 +355,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 		break
         case 'sticker':
         case 'stiker':
+        case 'sk':
             if ((isMedia || isQuotedImage) && args.length === 0) {
                 const encryptMedia = isQuotedImage ? quotedMsg : message
                 const _mimetype = isQuotedImage ? quotedMsg.mimetype : mimetype
@@ -440,9 +448,6 @@ module.exports = HandleMsg = async (aruga, message) => {
                     break  
 	case 'brainly':
             if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
-            
-            
-            
             if (args.length >= 2){
                 const BrainlySearch = require('./lib/brainly')
                 let tanya = body.slice(9)
@@ -468,6 +473,7 @@ module.exports = HandleMsg = async (aruga, message) => {
             break
         case 'stickergif':
         case 'stikergif':
+        case 'skg':
             if (isMedia || isQuotedVideo) {
                 if (mimetype === 'video/mp4' && message.duration < 10 || mimetype === 'image/gif' && message.duration < 10) {
                     var mediaData = await decryptMedia(message, uaOverride)
