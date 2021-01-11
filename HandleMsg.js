@@ -221,9 +221,6 @@ module.exports = HandleMsg = async (aruga, message) => {
 		
         switch (command) {
         // Menu and TnC
-        default:
-           await aruga.reply(from, `maaf tidak dapat menemukan command,ketik ${prefix}menu untuk melihat daftar command`, id)
-        break
         case 'speed':
         case 'p':
             await aruga.sendText(from, `Pong!!!!\nSpeed: ${processTime(t, moment())} _Second_`)
