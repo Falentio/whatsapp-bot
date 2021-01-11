@@ -306,7 +306,7 @@ module.exports = HandleMsg = async (aruga, message) => {
            const cardData = await ygo.random(withDesc)
            await aruga.reply(from, cardData, id)
          }else{
-           const cardName = body.split('${prefix}ygo ')[1].trim()
+           const cardName = body.split('${prefix}ygo ')[0].trim()
            const cardData = await ygo.getWName(cardName)
            await aruga.reply(from, cardData, id)
          }
