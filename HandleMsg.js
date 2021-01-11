@@ -299,12 +299,12 @@ module.exports = HandleMsg = async (aruga, message) => {
          if(args[0] == 'search'){
            const cardName = body.split('ygo search')[1].trim()
            const cardData = await ygo.getWName(cardName)
-           await aruga.reply(from, cardData, id)
+           return await aruga.reply(from, cardData, id)
          }
          if(args[0] == 'random'){
            const withDesc = args[1] !== undefined
            const cardData = await ygo.random(withDesc)
-           await aruga.reply(from, cardData, id)
+           return await aruga.reply(from, cardData, id)
          }else{
            const cardName = body.split('ygo ')[1].trim()
            const cardData = await ygo.getWName(cardName)
