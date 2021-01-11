@@ -1481,8 +1481,7 @@ module.exports = HandleMsg = async (aruga, message) => {
             aruga.reply(from, 'Success clear all chat!', id)
             break
         default:
-            aruga.reply(from, `tidak dapat menemukan command,ketik ${prefix}menu untuk melihat daftar command`, id)
-            break
+        break
         }
 		
 		// Simi-simi function
