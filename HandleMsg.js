@@ -290,6 +290,7 @@ module.exports = HandleMsg = async (aruga, message) => {
         }
         break
       case 'ygo':
+      case 'yugioh':
          if(args[0] == 'add' && isOwnerBot){
             ygowl.push(chatId)
             fs.writeFileSync('./settings/ygowhitelist.json', JSON.stringify(ygowl))
@@ -298,8 +299,8 @@ module.exports = HandleMsg = async (aruga, message) => {
          if(!isYGOWL) return aruga.sendText(from, 'maaf grup tidak terdaftar di whitelist untuk memakai command ygo')
          if(args[0] == 'search'){
            const cardName = body.split('ygo search')[1].trim()
-           const cardData = await ygo.getWName(cardName)
-           return await aruga.reply(from, cardData, id)
+           const cardData = await ygo.getWName(cardName, true)
+           return await aruga.sendFileFromUrl(from, cardData[1], image.jpg, cardData[0], id)
          }
          if(args[0] == 'random'){
            const withDesc = args[1] !== undefined
@@ -315,6 +316,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 	case 'stikertoimg':
 	case 'stickertoimg':
 	case 'stimg':
+        case 'skimg':
             if (quotedMsg && quotedMsg.type == 'sticker') {
                 const mediaData = await decryptMedia(quotedMsg)
                 aruga.reply(from, `Sedang di proses! Silahkan tunggu sebentar...`, id)
