@@ -304,11 +304,11 @@ module.exports = HandleMsg = async (aruga, message) => {
          }
          if(args[0] == 'random'){
            const withDesc = args[1] !== undefined
-           const cardData = await ygo.random(withDesc)
+           const cardData = await ygo.random(withDesc, true)
            return await aruga.sendFileFromUrl(from, cardData[1], 'image.jpg', cardData[0], id)
          }else{
            const cardName = body.split('ygo ')[1].trim()
-           const cardData = await ygo.getWName(cardName)
+           const cardData = await ygo.getWName(cardName, true)
            return await aruga.sendFileFromUrl(from, cardData[1], 'image.jpg', cardData[0], id)
          }
       break
