@@ -299,7 +299,7 @@ module.exports = HandleMsg = async (aruga, message) => {
          if(!isYGOWL) return aruga.sendText(from, 'maaf grup tidak terdaftar di whitelist untuk memakai command ygo')
          if(args[0] == 'search'){
            const cardName = body.split('ygo search')[1].trim()
-           const cardData = await ygo.getWName(cardName, true)
+           const cardData = await ygo.getWName(cardName, true, false)
            return await aruga.sendFileFromUrl(from, cardData[1], 'image.jpg', cardData[0], id)
          }
          if(args[0] == 'random'){
@@ -308,7 +308,7 @@ module.exports = HandleMsg = async (aruga, message) => {
            return await aruga.sendFileFromUrl(from, cardData[1], 'image.jpg', cardData[0], id)
          }else{
            const cardName = body.split('ygo ')[1].trim()
-           const cardData = await ygo.getWName(cardName, true)
+           const cardData = await ygo.getWName(cardName, true, false)
            return await aruga.sendFileFromUrl(from, cardData[1], 'image.jpg', cardData[0], id)
          }
       break
