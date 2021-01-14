@@ -300,8 +300,8 @@ module.exports = HandleMsg = async (aruga, message) => {
          if(args[0] == 'search'){
            const cardName = body.split('ygo search')[1].trim()
            const cardData = await ygo.getWName(cardName, true, false)
-           if(cardData[1] === undefined) return await aruga.reply(from, cardData, id)
-           return await aruga.sendFileFromUrl(from, cardData[1], 'image.jpg', cardData[0], id)
+           if(!Array.isArray(cardData)) return await aruga.reply(from, cardData, id)
+           if(Array.isArray(cardData)) return await aruga.sendFileFromUrl(from, cardData[1], 'image.jpg', cardData[0], id)
          }
          if(args[0] == 'random'){
            const withDesc = args[1] !== undefined
@@ -310,8 +310,8 @@ module.exports = HandleMsg = async (aruga, message) => {
          }else{
            const cardName = body.split('ygo ')[1].trim()
            const cardData = await ygo.getWName(cardName, true, false)
-           if(cardData[1] === undefined) return await aruga.reply(from, cardData, id)
-           return await aruga.sendFileFromUrl(from, cardData[1], 'image.jpg', cardData[0], id)
+           if(!Array.isArray(cardData)) return await aruga.reply(from, cardData, id)
+           if(Array.isArray(cardData)) return await aruga.sendFileFromUrl(from, cardData[1], 'image.jpg', cardData[0], id)
          }
       break
         //Sticker Converter
