@@ -300,7 +300,7 @@ module.exports = HandleMsg = async (aruga, message) => {
          if(args[0] == 'search'){
            const cardName = body.split('ygo search')[1].trim()
            const cardData = await ygo.getWName(cardName, true)
-           return await aruga.sendFileFromUrl(from, cardData[1], image.jpg, cardData[0], id)
+           return await aruga.sendFileFromUrl(from, cardData[1], 'image.jpg', cardData[0], id)
          }
          if(args[0] == 'random'){
            const withDesc = args[1] !== undefined
