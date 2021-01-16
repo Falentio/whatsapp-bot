@@ -991,7 +991,7 @@ module.exports = HandleMsg = async (aruga, message) => {
                 aruga.reply(from, 'Ada yang Error!', id)
             })
             break
-        case 'nekopoi':
+     /*   case 'nekopoi':
              rugapoi.getLatest()
             .then((result) => {
                 rugapoi.getVideo(result.link)
@@ -1006,7 +1006,7 @@ module.exports = HandleMsg = async (aruga, message) => {
             .catch(() => {
                 aruga.reply(from, 'Ada yang Error!', id)
             })
-            break
+            break*/
         case 'stalkig':
             if (args.length == 0) return aruga.reply(from, `Untuk men-stalk akun instagram seseorang\nketik ${prefix}stalkig [username]\ncontoh: ${prefix}stalkig ini.arga`, id)
             const igstalk = await rugaapi.stalkig(args[0])
