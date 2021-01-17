@@ -35,7 +35,7 @@ const start = (aruga = new Client()) => {
 	    })
 	    } else {
         await aruga.simulateTyping(chat.id, true).then(async () => {
-          await aruga.sendText(chat.id, `Hai minna~, Im Aruga Bot. To find out the commands on this bot type ${prefix}menu`)
+          await aruga.sendText(chat.id, `Hai , Im Falent Bot. To find out the commands on this bot type ${prefix}menu`)
         })
 	    }
 	}
@@ -73,7 +73,7 @@ const start = (aruga = new Client()) => {
     aruga.onMessage(async (message) => {
         aruga.getAmountOfLoadedMessages() // menghapus pesan cache jika sudah 3000 pesan.
             .then((msg) => {
-                if (msg >= 3000) {
+                if (msg >= 30000) {
                     console.log('[aruga]', color(`Loaded Message Reach ${msg}, cuting message cache...`, 'yellow'))
                     aruga.cutMsgCache()
                 }
