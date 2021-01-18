@@ -1455,7 +1455,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 		if ((!isCmd && isGroupMsg && isSimi) && message.type === 'chat') {
 			axios.get(`https://arugaz.herokuapp.com/api/simisimi?kata=${encodeURIComponent(message.body)}&apikey=${apiSimi}`)
 			.then((res) => {
-				if (res.data.status == 403) return aruga.sendText(ownerNumber, `${res.data.result}\n\n${res.data.pesan}`)
+				if (res.data.status == 403) return //aruga.sendText(ownerNumber, `${res.data.result}\n\n${res.data.pesan}`)
 				aruga.reply(from, `Simi berkata: ${res.data.result}`, id)
 			})
 			.catch((err) => {
