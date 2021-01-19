@@ -34,10 +34,11 @@ const {
     rugaapi,
     cariKasar,
     ygo,
-    menuBaru
+    menuBaru,
+    fbdl
 } = require('./lib')
 
-const fbdl = require('.lib/fbdlcore.js')
+//const fbdl = require('.lib/fbdlcore.js')
 
 const { 
     msgFilter, 
