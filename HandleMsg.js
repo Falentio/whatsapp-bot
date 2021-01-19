@@ -33,7 +33,8 @@ const {
     rugapoi,
     rugaapi,
     cariKasar,
-    ygo
+    ygo,
+    menu
 } = require('./lib')
 
 const { 
@@ -231,8 +232,11 @@ module.exports = HandleMsg = async (aruga, message) => {
         case 'notes':
         case 'menu':
         case 'help':
-            await aruga.sendText(from, menuId.textMenu(pushname))
-            .then(() => ((isGroupMsg) && (isGroupAdmins)) ? aruga.sendText(from, `Menu Admin Grup: *${prefix}menuadmin*`) : null)
+            menu = menu.menu(pushname)
+            listMenu = ['list','creator','islam','nsfw','search','random','download','lainnya','botinfo','owner','admin','grup creator']
+            if(args.length() === 0) return aruga.reply(from, menu.list, id)
+            if(!listMenu.includes(args[0])return aruga.reply(from, 'silahkan ketik \n!menu [category]\n untuk menampilkan daftar menu', id)
+            aruga.reply(from, menu[args[0]], id)
             break
         case 'menuadmin':
             if (!isGroupMsg) return aruga.reply(from, 'Maaf, perintah ini hanya dapat dipakai didalam grup!', id)
