@@ -37,7 +37,7 @@ const {
     menuBaru
 } = require('./lib')
 
-const fbdl = require('.lib/fbdlcore')
+const fbdl = require('.lib/fbdlcore.js')
 
 const { 
     msgFilter, 
