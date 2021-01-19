@@ -32,7 +32,9 @@ const {
     resep,
     rugapoi,
     rugaapi,
-    cariKasar
+    cariKasar,
+    ygo,
+    menuBaru
 } = require('./lib')
 
 const { 
@@ -46,6 +48,7 @@ const {
 const { uploadImages } = require('./utils/fetcher')
 
 const fs = require('fs-extra')
+const ygowl = JSON.parse(fs.readFileSync('./settings/ygowhitelist.json'))
 const banned = JSON.parse(fs.readFileSync('./settings/banned.json'))
 const simi = JSON.parse(fs.readFileSync('./settings/simi.json'))
 const ngegas = JSON.parse(fs.readFileSync('./settings/ngegas.json'))
@@ -115,6 +118,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 		
 		// [IDENTIFY]
 		const isOwnerBot = ownerNumber.includes(pengirim)
+        const isYGOWL = ygowl.includes(chatId)
         const isBanned = banned.includes(pengirim)
 		const isSimi = simi.includes(chatId)
 		const isNgegas = ngegas.includes(chatId)
@@ -219,7 +223,7 @@ module.exports = HandleMsg = async (aruga, message) => {
         switch (command) {
         // Menu and TnC
         case 'speed':
-        case 'ping':
+        case 'p':
             await aruga.sendText(from, `Pong!!!!\nSpeed: ${processTime(t, moment())} _Second_`)
             break
         case 'tnc':
@@ -228,8 +232,11 @@ module.exports = HandleMsg = async (aruga, message) => {
         case 'notes':
         case 'menu':
         case 'help':
-            await aruga.sendText(from, menuId.textMenu(pushname))
-            .then(() => ((isGroupMsg) && (isGroupAdmins)) ? aruga.sendText(from, `Menu Admin Grup: *${prefix}menuadmin*`) : null)
+            menu = menuBaru.menu(pushname)
+            listMenu = ['list','creator','islam','nsfw','search','random','download','lainnya','botinfo','owner','admin','grup creator']
+            if(args.length === 0) return aruga.reply(from, menu.list, id)
+            if(!listMenu.includes(args[0])) return aruga.reply(from, 'silahkan ketik \n!menu [category]\n untuk menampilkan daftar menu', id)
+            aruga.reply(from, menu[args[0]], id)
             break
         case 'menuadmin':
             if (!isGroupMsg) return aruga.reply(from, 'Maaf, perintah ini hanya dapat dipakai didalam grup!', id)
@@ -240,10 +247,10 @@ module.exports = HandleMsg = async (aruga, message) => {
         case 'donasi':
             await aruga.sendText(from, menuId.textDonasi())
             break
-        case 'ownerbot':
+        /*case 'ownerbot':
             await aruga.sendContact(from, ownerNumber)
             .then(() => aruga.sendText(from, 'Jika kalian ingin request fitur silahkan chat nomor owner!'))
-            break
+            break*/
         case 'join':
             if (args.length == 0) return aruga.reply(from, `Jika kalian ingin mengundang bot kegroup silahkan invite atau dengan\nketik ${prefix}join [link group]`, id)
             let linkgrup = body.slice(6)
@@ -276,11 +283,46 @@ module.exports = HandleMsg = async (aruga, message) => {
             aruga.sendText(from, `Status :\n- *${loadedMsg}* Loaded Messages\n- *${groups.length}* Group Chats\n- *${chatIds.length - groups.length}* Personal Chats\n- *${chatIds.length}* Total Chats`)
             break
         }
-
-	//Sticker Converter
+       case 'botlink':{
+            const botNumbe = await aruga.getHostNumber()
+            const wameLink = `wa.me\/${botNumbe}?text=${prefix}menu`
+            const shortlink = await urlShortener(wameLink)
+            await aruga.sendText(from, shortlink, id)
+            .catch(() => {
+                aruga.reply(from, 'Ada yang Error!', id)
+            })
+        }
+        break
+      case 'ygo':
+      case 'yugioh':
+         if(args[0] == 'add' && isOwnerBot){
+            ygowl.push(chatId)
+            fs.writeFileSync('./settings/ygowhitelist.json', JSON.stringify(ygowl))
+            aruga.reply(from, 'Success menambahkan group')
+         }     
+         if(!isYGOWL) return aruga.sendText(from, 'maaf grup tidak terdaftar di whitelist untuk memakai command ygo')
+         if(args[0] == 'search'){
+           const cardName = body.split('ygo search')[1].trim()
+           const cardData = await ygo.getWName(cardName, true, false)
+           if(!Array.isArray(cardData)) return await aruga.reply(from, cardData, id)
+           if(Array.isArray(cardData)) return await aruga.sendFileFromUrl(from, cardData[1], 'image.jpg', cardData[0], id)
+         }
+         if(args[0] == 'random'){
+           const withDesc = args[1] !== undefined
+           const cardData = await ygo.random(withDesc, true)
+           return await aruga.sendFileFromUrl(from, cardData[1], 'image.jpg', cardData[0], id)
+         }else{
+           const cardName = body.split('ygo ')[1].trim()
+           const cardData = await ygo.getWName(cardName, true, false)
+           if(!Array.isArray(cardData)) return await aruga.reply(from, cardData, id)
+           if(Array.isArray(cardData)) return await aruga.sendFileFromUrl(from, cardData[1], 'image.jpg', cardData[0], id)
+         }
+      break
+        //Sticker Converter
 	case 'stikertoimg':
 	case 'stickertoimg':
 	case 'stimg':
+        case 'skimg':
             if (quotedMsg && quotedMsg.type == 'sticker') {
                 const mediaData = await decryptMedia(quotedMsg)
                 aruga.reply(from, `Sedang di proses! Silahkan tunggu sebentar...`, id)
@@ -318,6 +360,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 		break
         case 'sticker':
         case 'stiker':
+        case 'sk':
             if ((isMedia || isQuotedImage) && args.length === 0) {
                 const encryptMedia = isQuotedImage ? quotedMsg : message
                 const _mimetype = isQuotedImage ? quotedMsg.mimetype : mimetype
@@ -410,9 +453,6 @@ module.exports = HandleMsg = async (aruga, message) => {
                     break  
 	case 'brainly':
             if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
-            
-            
-            
             if (args.length >= 2){
                 const BrainlySearch = require('./lib/brainly')
                 let tanya = body.slice(9)
@@ -438,6 +478,7 @@ module.exports = HandleMsg = async (aruga, message) => {
             break
         case 'stickergif':
         case 'stikergif':
+        case 'skg':
             if (isMedia || isQuotedVideo) {
                 if (mimetype === 'video/mp4' && message.duration < 10 || mimetype === 'image/gif' && message.duration < 10) {
                     var mediaData = await decryptMedia(message, uaOverride)
@@ -954,7 +995,7 @@ module.exports = HandleMsg = async (aruga, message) => {
                 aruga.reply(from, 'Ada yang Error!', id)
             })
             break
-        case 'nekopoi':
+     /*   case 'nekopoi':
              rugapoi.getLatest()
             .then((result) => {
                 rugapoi.getVideo(result.link)
@@ -969,7 +1010,7 @@ module.exports = HandleMsg = async (aruga, message) => {
             .catch(() => {
                 aruga.reply(from, 'Ada yang Error!', id)
             })
-            break
+            break*/
         case 'stalkig':
             if (args.length == 0) return aruga.reply(from, `Untuk men-stalk akun instagram seseorang\nketik ${prefix}stalkig [username]\ncontoh: ${prefix}stalkig ini.arga`, id)
             const igstalk = await rugaapi.stalkig(args[0])
@@ -1448,14 +1489,14 @@ module.exports = HandleMsg = async (aruga, message) => {
             aruga.reply(from, 'Success clear all chat!', id)
             break
         default:
-            break
+        break
         }
 		
 		// Simi-simi function
 		if ((!isCmd && isGroupMsg && isSimi) && message.type === 'chat') {
 			axios.get(`https://arugaz.herokuapp.com/api/simisimi?kata=${encodeURIComponent(message.body)}&apikey=${apiSimi}`)
 			.then((res) => {
-				if (res.data.status == 403) return //aruga.sendText(ownerNumber, `${res.data.result}\n\n${res.data.pesan}`)
+				if (res.data.status == 403) return aruga.sendText(ownerNumber, `${res.data.result}\n\n${res.data.pesan}`)
 				aruga.reply(from, `Simi berkata: ${res.data.result}`, id)
 			})
 			.catch((err) => {
