@@ -300,7 +300,7 @@ module.exports = HandleMsg = async (aruga, message) => {
       vidLink = args[0]
       fbdl.getInfo(vidLink)
       .then(res=>{
-        aruga.reply(from, res)
+        aruga.reply(from, JSON.stringify(res))
         })
       .catch(err=>aruga.reply(from, err))
       }
