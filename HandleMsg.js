@@ -34,7 +34,7 @@ const {
     rugaapi,
     cariKasar,
     ygo,
-    menu
+    menuBaru
 } = require('./lib')
 
 const { 
@@ -232,7 +232,7 @@ module.exports = HandleMsg = async (aruga, message) => {
         case 'notes':
         case 'menu':
         case 'help':
-            menu = menu.menu(pushname)
+            menu = menuBaru.menu(pushname)
             listMenu = ['list','creator','islam','nsfw','search','random','download','lainnya','botinfo','owner','admin','grup creator']
             if(args.length() === 0) return aruga.reply(from, menu.list, id)
             if(!listMenu.includes(args[0])return aruga.reply(from, 'silahkan ketik \n!menu [category]\n untuk menampilkan daftar menu', id)
