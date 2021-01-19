@@ -298,7 +298,7 @@ module.exports = HandleMsg = async (aruga, message) => {
         break
       case 'efbi':{
       vidLink = args[0]
-      fbdl.download(vidlink)
+      fbdl.download(vidLink)
       .then(res=>{
         aruga.reply(from, res)
         })
