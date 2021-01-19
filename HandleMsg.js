@@ -234,7 +234,7 @@ module.exports = HandleMsg = async (aruga, message) => {
         case 'help':
             menu = menuBaru.menu(pushname)
             listMenu = ['list','creator','islam','nsfw','search','random','download','lainnya','botinfo','owner','admin','grup creator']
-            if(args.length() === 0) return aruga.reply(from, menu.list, id)
+            if(args.length === 0) return aruga.reply(from, menu.list, id)
             if(!listMenu.includes(args[0])) return aruga.reply(from, 'silahkan ketik \n!menu [category]\n untuk menampilkan daftar menu', id)
             aruga.reply(from, menu[args[0]], id)
             break
