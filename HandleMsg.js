@@ -302,7 +302,7 @@ module.exports = HandleMsg = async (aruga, message) => {
       .then(res=>{
         aruga.reply(from, res)
         })
-      .catch(err=>aruga.reply(from, err)
+      .catch(err=>aruga.reply(from, err))
       }
       break
       case 'ygo':
