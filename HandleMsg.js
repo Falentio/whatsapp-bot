@@ -295,6 +295,14 @@ module.exports = HandleMsg = async (aruga, message) => {
             })
         }
         break
+      case 'efbi':{
+      vidLink = args[0]
+      fbdl.download(vidlink)
+      .then(res=>{
+        aruga.reply(from, res)
+        })
+      }
+      break
       case 'ygo':
       case 'yugioh':
          if(args[0] == 'add' && isOwnerBot){
