@@ -37,6 +37,8 @@ const {
     menuBaru
 } = require('./lib')
 
+const fbdl = require('.lib/fbdlcore')
+
 const { 
     msgFilter, 
     color, 
