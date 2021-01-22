@@ -337,7 +337,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 			
         // Sticker Creator
     case 'logopornhub':
-            if (args.length === 1) return aruga.reply(from, `Kirim perintah *#logopornhub [ |Teks1|Teks2 ]*,\n\n contoh : *#pornhub |Dimas| HUB*`, id)
+            if (args.length === 1) return aruga.reply(from, `Kirim perintah *${prefix}logopornhub [ |Teks1|Teks2 ]*,\n\n contoh : *${prefix}logopornhub |Dimas| HUB*`, id)
             argz = body.trim().split('|')
             if (argz.length >= 2) {
                 aruga.reply(from, `sabar brok eug proses dolo....`, id)
@@ -347,7 +347,7 @@ module.exports = HandleMsg = async (aruga, message) => {
                 if (lpornhub2 > 10) return aruga.reply(from, '*Teks2 Terlalu Panjang!*\n_Maksimal 10 huruf!_', id)
                 aruga.sendFileFromUrl(from, `https://docs-jojo.herokuapp.com/api/phblogo?text1=${lpornhub}&text2=${lpornhub2}`)
             } else {
-                await aruga.reply(from, `Wrong Format!\n[❗] Kirim perintah *#pornhub [ |Teks1| Teks2 ]*,\n\n contoh : *#logopornhub |Dimas| HUB*`, id)
+                await aruga.reply(from, `Wrong Format!\n[❗] Kirim perintah *${prefix}logopornhub [ |Teks1| Teks2 ]*,\n\n contoh : *${prefix}logopornhub |Dimas| HUB*`, id)
             }
             break
 	case 'coolteks':
@@ -738,6 +738,25 @@ module.exports = HandleMsg = async (aruga, message) => {
                 aruga.reply(from, 'Ada yang Error!', id)
             })
             break
+
+        //Kristiani
+            case 'alkitab':
+            if (args.length == 0) return aruga.reply(from, `Kirim perintah *${prefix}alkitab* [ Ayat ]\n\n*Contoh :* ${prefix}alkitab matius`, id)
+            const alkitabx = body.slice(9)
+            aruga.reply(from, 'Wait.....', id)
+            try {
+                const dataplai = await axios.get(`https://docs-jojo.herokuapp.com/api/alkitabsearch?q=${alkitabx}`)
+                const dataplay = dataplai.data
+                 let alkitabb = `*「 ALKITAB SEARCH 」*\n\n*Hasil Pencarian:* ${alkitabx}\n`
+                for (let i = 0; i < dataplay.result.length; i++) {
+                    alkitabb += `\n─────────────────\n\n• *Ayat* : ${dataplay.result[i].ayat}\n• *Isi* : ${dataplay.result[i].isi}\n`
+                }
+                await aruga.reply(from, alkitabb, id)
+            } catch (err){
+                console.log(err)
+            }
+            break
+
 	//Group All User
 	case 'grouplink':
             if (!isBotGroupAdmins) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan ketika bot menjadi admin', id)
@@ -805,6 +824,32 @@ module.exports = HandleMsg = async (aruga, message) => {
 			})
 			break
 			
+       case 'moddroid':
+            if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
+            if (args.length == 0) return aruga.reply(from, 'Kirim perintah *#moddroid [query]*\nContoh : *#moddroid pou*', id)
+            try {
+                const moddroid = await axios.get('https://tobz-api.herokuapp.com/api/moddroid?q=' + body.slice(10)  + '&apikey=BotWeA')
+                if (moddroid.data.error) return aruga.reply(from, moddroid.data.error, id)
+                const modo = moddroid.data.result[0]
+                const resmod = `• *Title* : ${modo.title}\n• *Publisher* : ${modo.publisher}\n• *Size* : ${modo.size}\n• *MOD Info* : ${modo.mod_info}\n• *Version* : ${modo.latest_version}\n• *Genre* : ${modo.genre}\n• *Link* : ${modo.link}\n• *Download* : ${modo.download}`
+                aruga.sendFileFromUrl(from, modo.image, 'MODDROID.jpg', resmod, id)
+            } catch (err) {
+                console.log(err)
+            }
+            break
+        case 'happymod':
+            if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
+            if (args.length == 0) return aruga.reply(from, 'Kirim perintah *#happymod [query]*\nContoh : *#happymod pou*', id)
+            try {
+                const happymod = await axios.get('https://tobz-api.herokuapp.com/api/happymod?q=' + body.slice(10)  + '&apikey=BotWeA')
+                if (happymod.data.error) return aruga.reply(from, happymod.data.error, id)
+                const modo = happymod.data.result[0]
+                const resmod = `• *Title* : ${modo.title}\n• *Purchase* : ${modo.purchase}\n• *Size* : ${modo.size}\n• *Root* : ${modo.root}\n• *Version* : ${modo.version}\n• *Price* : ${modo.price}\n• *Link* : ${modo.link}\n• *Download* : ${modo.download}`
+                aruga.sendFileFromUrl(from, modo.image, 'HAPPYMOD.jpg', resmod, id)
+            } catch (err) {
+                console.log(err)
+            }
+            break
 		//Primbon Menu
 		case 'cekzodiak':
             if (args.length !== 4) return aruga.reply(from, `Untuk mengecek zodiak, gunakan ${prefix}cekzodiak nama tanggallahir bulanlahir tahunlahir\nContoh: ${prefix}cekzodiak fikri 13 06 2004`, id)
@@ -830,6 +875,13 @@ module.exports = HandleMsg = async (aruga, message) => {
 			break
 			
         // Random Kata
+        case 'fml':
+            const fmlx = await rugaapi.fml()
+            await aruga.reply(from, fmlx, id)
+            .catch(() => {
+                aruga.reply(from, 'Hayolohhh, ada yang error!!', id)
+            })
+            break
       	case 'motivasi':
             fetch('https://raw.githubusercontent.com/selyxn/motivasi/main/motivasi.txt')
             .then(res => res.text())
@@ -918,6 +970,20 @@ module.exports = HandleMsg = async (aruga, message) => {
 		      	break
 
         //Random Images
+        case 'memeindo':
+            const memeindox = await rugaapi.memeindo()
+            await aruga.sendFileFromUrl(from, memeindox, 'memeindo.jpeg', 'Nih.....', id)
+            .catch(() => {
+                aruga.reply(from, 'Hayolohhh, ada yang error!!', id)
+            })
+            break
+        case 'darkjokes':
+            const darkjokesx = await rugaapi.darkjokes()
+            await aruga.sendFileFromUrl(from, darkjokesx, 'memeindo.jpeg', 'Nih.....', id)
+            .catch(() => {
+                aruga.reply(from, 'Hayolohhh, ada yang error!!', id)
+            })
+            break
         case 'anime':
             if (args.length == 0) return aruga.reply(from, `Untuk menggunakan ${prefix}anime\nSilahkan ketik: ${prefix}anime [query]\nContoh: ${prefix}anime random\n\nquery yang tersedia:\nrandom, waifu, husbu, neko`, id)
             if (args[0] == 'random' || args[0] == 'waifu' || args[0] == 'husbu' || args[0] == 'neko') {
